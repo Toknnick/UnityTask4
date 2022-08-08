@@ -19,51 +19,39 @@ public class Alarm : MonoBehaviour
 
     private void Update()
     {
-        ChangeSound();
-    }
-
-    private void ChangeSound()
-    {
         float soundSpeedIncrease = 0.4f;
+        int maxSound = 1;
+        IEnumerator addSound = ChangeSound(soundSpeedIncrease, maxSound, maxSound);
+        IEnumerator turnDownSound = ChangeSound(soundSpeedIncrease, 0, maxSound);
+        //IEnumerator coroutine = StartCorout();
+        Debug.Log("isPlaying = " + _audioSource.isPlaying);
+        Debug.Log("_isEntered = " + _isEntered);
 
-        if (_isEntered == true)
+        if (_isEntered == true && _audioSource.isPlaying == false)
         {
-            if (_audioSource.isPlaying == false)
-            {
-                _audioSource.Play();
-            }
-
-            StopCoroutine(TurnDownSound(soundSpeedIncrease));
-            StartCoroutine(AddSound(soundSpeedIncrease));
+            _audioSource.Play();
         }
-        else if (_isEntered == false)
+        else if (_isEntered == true && _audioSource.isPlaying == true)
         {
-            StopCoroutine(AddSound(soundSpeedIncrease));
-            StartCoroutine(TurnDownSound(soundSpeedIncrease));
-
-            if (_audioSource.volume == 0)
-            {
-                _audioSource.Stop();
-            }
+            StartCoroutine(addSound);
         }
-    }
-
-    private IEnumerator AddSound(float soundSpeedIncrease)
-    {
-        float maxSound = 1;
-
-        if (_audioSource.volume < maxSound)
+        else if(_audioSource.volume > 0 && _audioSource.isPlaying == true && _isEntered == false)
         {
-            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, maxSound, Time.deltaTime * soundSpeedIncrease);
-            yield return null;
+            StopCoroutine(addSound);
+            StartCoroutine(turnDownSound);
+        }
+        else
+        {
+            StopCoroutine(turnDownSound);
+            _audioSource.Stop();
         }
     }
 
-    private IEnumerator TurnDownSound(float soundSpeedIncrease)
+    private IEnumerator ChangeSound(float soundSpeedIncrease, int targetSound, int maxSound)
     {
-        if (_audioSource.volume > 0)
+        if (_audioSource.volume >= 0 && _audioSource.volume <= maxSound)
         {
-            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, 0, Time.deltaTime * soundSpeedIncrease);
+            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, targetSound, Time.deltaTime * soundSpeedIncrease);
             yield return null;
         }
     }
