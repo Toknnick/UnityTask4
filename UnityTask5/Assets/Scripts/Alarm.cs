@@ -1,25 +1,40 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Alarm : MonoBehaviour
 {
-    [field: SerializeField] public AudioSource AudioSource { get; private set; }
-    [SerializeField] private UnityEvent _audioMixer;
+    [SerializeField] private AudioSource _audioSource;
 
-    public bool IsEntered { get; private set; }
+    private bool _isEnteredSomeBodyInAlarmZone;
 
     public void TurnOn()
     {
-        IsEntered = true;
+        _isEnteredSomeBodyInAlarmZone = true;
     }
 
     public void TurnOff()
     {
-        IsEntered = false;
+        _isEnteredSomeBodyInAlarmZone = false;
     }
 
     private void Update()
     {
-        _audioMixer.Invoke();
+        int maxVolume = 1;
+
+        if (_isEnteredSomeBodyInAlarmZone == true)
+            StartCoroutine(ChangeVolume(maxVolume));
+        else
+            StartCoroutine(ChangeVolume(0));
+    }
+
+    private IEnumerator ChangeVolume(int target)
+    {
+        if (_audioSource.isPlaying == false)
+            _audioSource.Play();
+        else if (_audioSource.volume <= 0)
+            _audioSource.Stop();
+
+        _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, target, Time.deltaTime);
+        yield return null;
     }
 }
