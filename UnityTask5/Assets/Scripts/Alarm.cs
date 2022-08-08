@@ -17,24 +17,29 @@ public class Alarm : MonoBehaviour
         _isEnteredSomeBodyInAlarmZone = false;
     }
 
-    private void Update()
+    private void Start()
     {
-        int maxVolume = 1;
-
-        if (_isEnteredSomeBodyInAlarmZone == true)
-            StartCoroutine(ChangeVolume(maxVolume));
-        else
-            StartCoroutine(ChangeVolume(0));
+        StartCoroutine(ChangeVolume());
     }
 
-    private IEnumerator ChangeVolume(int target)
+    private IEnumerator ChangeVolume()
     {
-        if (_audioSource.isPlaying == false)
-            _audioSource.Play();
-        else if (_audioSource.volume <= 0)
-            _audioSource.Stop();
+        while (true)
+        {
+            int target;
 
-        _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, target, Time.deltaTime);
-        yield return null;
+            if (_isEnteredSomeBodyInAlarmZone == true)
+                target = 1;
+            else
+                target = 0;
+
+            if (_audioSource.isPlaying == false)
+                _audioSource.Play();
+            else if (_audioSource.volume <= 0)
+                _audioSource.Stop();
+
+            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, target, Time.deltaTime);
+            yield return null;
+        }
     }
 }
