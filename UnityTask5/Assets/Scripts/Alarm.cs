@@ -7,12 +7,11 @@ public class Alarm : MonoBehaviour
 
     private bool _isEnteredSomeBodyInAlarmZone;
 
-    public void ChangeMod(bool isEnteredSomeBodyInAlarmZone)
+    public void ChangeMode(bool isEnteredSomeBodyInAlarmZone)
     {
         _isEnteredSomeBodyInAlarmZone = isEnteredSomeBodyInAlarmZone;
     }
 
-    //Придумать название.
     private void Start()
     {
         StartCoroutine(ChangeVolume());
@@ -38,4 +37,5 @@ public class Alarm : MonoBehaviour
             yield return null;
         }
     }
+
 }

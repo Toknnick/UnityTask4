@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class TriggerInAlarmZone : MonoBehaviour
 {
-    [SerializeField] private EventBool _alarm;
+    [SerializeField] private UnityEvent<bool> _alarm;
 
     private void OnTriggerEnter(Collider collider)
     {
@@ -15,5 +15,3 @@ public class TriggerInAlarmZone : MonoBehaviour
         _alarm?.Invoke(false);
     }
 }
-
-[System.Serializable] public class EventBool : UnityEvent<bool> { }
