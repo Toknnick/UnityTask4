@@ -3,17 +3,15 @@ using UnityEngine.Events;
 
 public class Trigger : MonoBehaviour
 {
-    [SerializeField] private UnityEvent<int> _alarmed;
+    [SerializeField] private UnityEvent<bool> _activated;
 
     private void OnTriggerEnter(Collider collider)
     {
-        int targetVolume = 1;
-        _alarmed?.Invoke(targetVolume);
+        _activated?.Invoke(true);
     }
 
     private void OnTriggerExit(Collider collider)
     {
-        int targetVolume = 0;
-        _alarmed?.Invoke(targetVolume);
+        _activated?.Invoke(false);
     }
 }
