@@ -5,37 +5,30 @@ public class Alarm : MonoBehaviour
 {
     [SerializeField] private AudioSource _audioSource;
 
-    private bool _isEnteredSomeBodyInAlarmZone;
-
-    public void ChangeMode(bool isEnteredSomeBodyInAlarmZone)
+    public void ChangeVolume(int targetVolume)
     {
-        _isEnteredSomeBodyInAlarmZone = isEnteredSomeBodyInAlarmZone;
+        if (_audioSource.isPlaying == false)
+            _audioSource.Play();
+
+        StartCoroutine(ChangeSmoothlyVolume(targetVolume));
+
+        if (_audioSource.volume <= 0 && _audioSource.isPlaying == true)
+            _audioSource.Stop();
     }
 
-    private void Start()
+    private void Update()
     {
-        StartCoroutine(ChangeVolume());
-    }
+        int maxVolume = 1;
 
-    private IEnumerator ChangeVolume()
+        if (_audioSource.isPlaying == false && _audioSource.volume >= maxVolume)
+            _audioSource.Play();
+    }
+    private IEnumerator ChangeSmoothlyVolume(int targetVolume)
     {
-        while (true)
+        while (_audioSource.volume < targetVolume || _audioSource.volume > targetVolume)
         {
-            int targetVolume;
-
-            if (_isEnteredSomeBodyInAlarmZone == true)
-                targetVolume = 1;
-            else
-                targetVolume = 0;
-
-            if (_audioSource.isPlaying == false)
-                _audioSource.Play();
-            else if (_audioSource.volume <= 0)
-                _audioSource.Stop();
-
             _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, targetVolume, Time.deltaTime);
             yield return null;
         }
     }
-
-}
+} 
