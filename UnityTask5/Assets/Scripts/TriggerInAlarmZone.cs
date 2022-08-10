@@ -1,16 +1,19 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TriggerInAlarmZone : MonoBehaviour
 {
-    [SerializeField] private Alarm _alarm;
+    [SerializeField] private EventBool _alarm;
 
     private void OnTriggerEnter(Collider collider)
     {
-        _alarm.TurnOn();
+        _alarm?.Invoke(true);
     }
 
     private void OnTriggerExit(Collider collider)
     {
-        _alarm.TurnOff();
+        _alarm?.Invoke(false);
     }
 }
+
+[System.Serializable] public class EventBool : UnityEvent<bool> { }

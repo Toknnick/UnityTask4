@@ -7,16 +7,12 @@ public class Alarm : MonoBehaviour
 
     private bool _isEnteredSomeBodyInAlarmZone;
 
-    public void TurnOn()
+    public void ChangeMod(bool isEnteredSomeBodyInAlarmZone)
     {
-        _isEnteredSomeBodyInAlarmZone = true;
+        _isEnteredSomeBodyInAlarmZone = isEnteredSomeBodyInAlarmZone;
     }
 
-    public void TurnOff()
-    {
-        _isEnteredSomeBodyInAlarmZone = false;
-    }
-
+    //Придумать название.
     private void Start()
     {
         StartCoroutine(ChangeVolume());
@@ -26,19 +22,19 @@ public class Alarm : MonoBehaviour
     {
         while (true)
         {
-            int target;
+            int targetVolume;
 
             if (_isEnteredSomeBodyInAlarmZone == true)
-                target = 1;
+                targetVolume = 1;
             else
-                target = 0;
+                targetVolume = 0;
 
             if (_audioSource.isPlaying == false)
                 _audioSource.Play();
             else if (_audioSource.volume <= 0)
                 _audioSource.Stop();
 
-            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, target, Time.deltaTime);
+            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, targetVolume, Time.deltaTime);
             yield return null;
         }
     }

@@ -1,16 +1,15 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Player : MonoBehaviour
+public class PlayerMover : MonoBehaviour
 {
     [SerializeField] private float _speed;
 
-    private Rigidbody _rigidbody;
-
     private void Start()
     {
-        _rigidbody = GetComponent<Rigidbody>();
-        _rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        Rigidbody rigidbody;
+        rigidbody = GetComponent<Rigidbody>();
+        rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
     private void Update()
