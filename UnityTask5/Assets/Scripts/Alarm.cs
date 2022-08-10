@@ -10,7 +10,7 @@ public class Alarm : MonoBehaviour
         if (_audioSource.isPlaying == false)
             _audioSource.Play();
 
-        StartCoroutine(ChangeSmoothlyVolume(targetVolume));
+        StartCoroutine(ChangeVolumeSmoothly(targetVolume));
 
         if (_audioSource.volume <= 0 && _audioSource.isPlaying == true)
             _audioSource.Stop();
@@ -23,7 +23,7 @@ public class Alarm : MonoBehaviour
         if (_audioSource.isPlaying == false && _audioSource.volume >= maxVolume)
             _audioSource.Play();
     }
-    private IEnumerator ChangeSmoothlyVolume(int targetVolume)
+    private IEnumerator ChangeVolumeSmoothly(int targetVolume)
     {
         while (_audioSource.volume < targetVolume || _audioSource.volume > targetVolume)
         {
